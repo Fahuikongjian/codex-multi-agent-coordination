@@ -1,0 +1,20 @@
+test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) ... ok
+test_blank_identifier (test_ledger.LedgerAcceptance.test_blank_identifier) ... ok
+test_bom (test_ledger.LedgerAcceptance.test_bom) ... ok
+test_duplicate_ids (test_ledger.LedgerAcceptance.test_duplicate_ids) ... ok
+test_empty_lines (test_ledger.LedgerAcceptance.test_empty_lines) ... ok
+test_exact_decimal_total (test_ledger.LedgerAcceptance.test_exact_decimal_total) ... ok
+test_header_only_is_empty (test_ledger.LedgerAcceptance.test_header_only_is_empty) ... ok
+test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) ... ok
+test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) ... ok
+test_large_price_without_float_loss (test_ledger.LedgerAcceptance.test_large_price_without_float_loss) ... ok
+test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) ... ok
+test_quantity_and_cell_whitespace (test_ledger.LedgerAcceptance.test_quantity_and_cell_whitespace) ... ok
+test_quoted_identifier (test_ledger.LedgerAcceptance.test_quoted_identifier) ... ok
+test_reordered_header (test_ledger.LedgerAcceptance.test_reordered_header) ... ok
+test_revision_1_rejects_refund (test_ledger.LedgerAcceptance.test_revision_1_rejects_refund) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.002s
+
+OK

@@ -1,0 +1,14 @@
+{
+  "task": "R1",
+  "assignment_epoch": 1,
+  "snapshot": "41eba46b2ef07bff98e832f34932bf23576054f8",
+  "finding": {
+    "priority": "P2",
+    "issue": "Unbounded decimal input can exceed Python integer parsing or JSON conversion limits",
+    "reproduction": "quantity of 2200 nines and unit_price of 2200 nines followed by .99; CLI returns exit 1 and traceback"
+  },
+  "other_findings": [],
+  "scope": "read-only",
+  "reported_active_processes": 0,
+  "english_skill_role_boundaries": "usable"
+}

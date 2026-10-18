@@ -1,0 +1,8 @@
+{
+  "candidate_epoch": 1,
+  "current_epoch": 3,
+  "result": "rejected_as_obsolete",
+  "executed_candidate_result": "line 4: quantity must be greater than zero",
+  "current_ledger_sha256_before": "debb7a764f7e7505f7f2b30572ac88573de42bf51a313df6fff1d404c996c7cd",
+  "current_ledger_sha256_after": "debb7a764f7e7505f7f2b30572ac88573de42bf51a313df6fff1d404c996c7cd"
+}

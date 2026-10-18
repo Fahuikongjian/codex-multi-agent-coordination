@@ -1,0 +1,12 @@
+{
+  "repository_text_files": 36,
+  "validated_relative_links": 25,
+  "tests_passed": 30,
+  "manual_cli_cases_passed": 8,
+  "cache_directories_before_cleanup": [
+    "__pycache__",
+    "acceptance/__pycache__",
+    "tests/__pycache__"
+  ],
+  "bytecode_files_before_cleanup": 4
+}

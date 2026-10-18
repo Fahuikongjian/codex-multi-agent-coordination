@@ -1,0 +1,7 @@
+{
+  "SKILL.md": "48f1a470b609c4cf695b2b4640c3a297a87134fbcddc86b9dd5bbdbd93cb6371",
+  "agents/openai.yaml": "8696f58b1698fe149c294f87be253b39c1b7124b9ec6387422e274d9de0b3408",
+  "references/codex-tools.md": "747e03d9f3f45bad96958f082fabac1fce29a9cd48633ba45c8ec1bbe08e84ee",
+  "references/conflict-recovery.md": "974001573f812c51fc19d3b00c5f264146ee00531cc095142bf3123b7a14f8f5",
+  "references/task-contracts.md": "f5d369ae85e4e6fb797a20e150af4a797b7e823b7392b0bcfe7e29fe83336817"
+}

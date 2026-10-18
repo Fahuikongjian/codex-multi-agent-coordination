@@ -1,0 +1,4 @@
+order_id,quantity,unit_price
+sale-a,2,19.99
+sale-b,3,0.10
+refund-a,-1,19.99

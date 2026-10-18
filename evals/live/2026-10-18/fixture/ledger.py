@@ -1,0 +1,60 @@
+"""Validate and summarize orders using exact integer-cent arithmetic."""
+
+import csv
+import io
+import re
+
+
+_HEADERS = {"order_id", "quantity", "unit_price"}
+_QUANTITY = re.compile(r"-?[0-9]+")
+_PRICE = re.compile(r"[0-9]+(?:\.[0-9]{1,2})?")
+
+
+def summarize_orders(csv_text: str) -> dict[str, int]:
+    """Return the row count and total cents, or raise ValueError for bad CSV."""
+    reader = csv.reader(io.StringIO(csv_text.removeprefix("\ufeff"), newline=""), strict=True)
+    order_ids = set()
+    order_count = 0
+    total_cents = 0
+
+    try:
+        headers = next((row for row in reader if row), None)
+        if headers is None or len(headers) != 3 or set(headers) != _HEADERS:
+            raise ValueError("headers must be exactly order_id, quantity, unit_price")
+        indices = {name: headers.index(name) for name in _HEADERS}
+
+        for row in reader:
+            if not row:
+                continue
+            location = f"line {reader.line_num}"
+            if len(row) != len(headers):
+                raise ValueError(f"{location}: expected 3 cells, received {len(row)}")
+            order_id = row[indices["order_id"]].strip()
+            quantity_text = row[indices["quantity"]].strip()
+            price_text = row[indices["unit_price"]].strip()
+
+            if not order_id:
+                raise ValueError(f"{location}: order_id must not be blank")
+            if order_id in order_ids:
+                raise ValueError(f"{location}: duplicate order_id")
+            if not _QUANTITY.fullmatch(quantity_text):
+                raise ValueError(f"{location}: quantity must be an ASCII decimal integer")
+            if len(quantity_text.removeprefix("-")) > 18:
+                raise ValueError(f"{location}: quantity must have at most 18 digits")
+            quantity = int(quantity_text)
+            if quantity == 0:
+                raise ValueError(f"{location}: quantity must not be zero")
+            if not _PRICE.fullmatch(price_text):
+                raise ValueError(f"{location}: unit_price must be an unsigned decimal with at most 2 decimal places")
+
+            whole, _, fraction = price_text.partition(".")
+            if len(whole) > 30:
+                raise ValueError(f"{location}: unit_price must have at most 30 whole-part digits")
+            price_cents = int(whole) * 100 + int(fraction.ljust(2, "0") or "0")
+            total_cents += quantity * price_cents
+            order_count += 1
+            order_ids.add(order_id)
+    except csv.Error as error:
+        raise ValueError(f"line {reader.line_num}: invalid CSV: {error}") from error
+
+    return {"order_count": order_count, "total_cents": total_cents}

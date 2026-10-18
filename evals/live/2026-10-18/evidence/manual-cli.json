@@ -1,0 +1,105 @@
+[
+  {
+    "case": "file",
+    "command": [
+      "python",
+      "cli.py",
+      "evidence/sample-input.csv"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"order_count\": 3, \"total_cents\": 2029}\n",
+    "stderr": ""
+  },
+  {
+    "case": "stdin",
+    "command": [
+      "python",
+      "cli.py",
+      "-"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"order_count\": 3, \"total_cents\": 2029}\n",
+    "stderr": ""
+  },
+  {
+    "case": "invalid-zero",
+    "command": [
+      "python",
+      "cli.py",
+      "-"
+    ],
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: quantity must not be zero\n"
+  },
+  {
+    "case": "huge-product",
+    "command": [
+      "python",
+      "-B",
+      "cli.py",
+      "-"
+    ],
+    "quantity_digits": 2200,
+    "price_whole_digits": 2200,
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: quantity must have at most 18 digits\n"
+  },
+  {
+    "case": "4301-digit-quantity",
+    "command": [
+      "python",
+      "-B",
+      "cli.py",
+      "-"
+    ],
+    "quantity_digits": 4301,
+    "price_whole_digits": 1,
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: quantity must have at most 18 digits\n"
+  },
+  {
+    "case": "4301-digit-price",
+    "command": [
+      "python",
+      "-B",
+      "cli.py",
+      "-"
+    ],
+    "quantity_digits": 1,
+    "price_whole_digits": 4301,
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: unit_price must have at most 30 whole-part digits\n"
+  },
+  {
+    "case": "csv-field-quantity",
+    "command": [
+      "python",
+      "-B",
+      "cli.py",
+      "-"
+    ],
+    "quantity_digits": 131073,
+    "price_whole_digits": 1,
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: invalid CSV: field larger than field limit (131072)\n"
+  },
+  {
+    "case": "csv-field-price",
+    "command": [
+      "python",
+      "-B",
+      "cli.py",
+      "-"
+    ],
+    "quantity_digits": 1,
+    "price_whole_digits": 131073,
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "error: line 2: invalid CSV: field larger than field limit (131072)\n"
+  }
+]

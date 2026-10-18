@@ -1,4 +1,4 @@
 interface:
-  display_name: "Codex 多代理协作"
-  short_description: "明确职责、文件所有权与决策边界，减少多代理冲突、重复实现和反复推翻"
-  default_prompt: "使用 $codex-multi-agent-coordination 协调这个任务；只委派能独立推进的工作，明确文件所有权、验收标准与争议处理，再完成集成验证。"
+  display_name: "Codex Multi-Agent Coordination"
+  short_description: "Coordinate agents with clear ownership and safe handoffs"
+  default_prompt: "Use $codex-multi-agent-coordination to delegate independent work, define ownership and acceptance, resolve disagreements with evidence, and deliver the integrated result."

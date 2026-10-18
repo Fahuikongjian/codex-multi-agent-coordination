@@ -1,0 +1,27 @@
+test_large_input_is_validation_error_not_traceback (test_cli_regression.LargeNumberCliRegression.test_large_input_is_validation_error_not_traceback) ... ok
+test_all_refund_ledger (test_ledger.LedgerAcceptance.test_all_refund_ledger) ... ok
+test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) ... ok
+test_blank_identifier (test_ledger.LedgerAcceptance.test_blank_identifier) ... ok
+test_bom (test_ledger.LedgerAcceptance.test_bom) ... ok
+test_duplicate_ids (test_ledger.LedgerAcceptance.test_duplicate_ids) ... ok
+test_empty_lines (test_ledger.LedgerAcceptance.test_empty_lines) ... ok
+test_exact_decimal_total (test_ledger.LedgerAcceptance.test_exact_decimal_total) ... ok
+test_header_only_is_empty (test_ledger.LedgerAcceptance.test_header_only_is_empty) ... ok
+test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) ... ok
+test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) ... ok
+test_large_price_without_float_loss (test_ledger.LedgerAcceptance.test_large_price_without_float_loss) ... ok
+test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) ... ok
+test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) ... ok
+test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) ... ok
+test_parser_field_limit_remains_validation_error (test_ledger.LedgerAcceptance.test_parser_field_limit_remains_validation_error) ... ok
+test_quantity_and_cell_whitespace (test_ledger.LedgerAcceptance.test_quantity_and_cell_whitespace) ... ok
+test_quoted_identifier (test_ledger.LedgerAcceptance.test_quoted_identifier) ... ok
+test_refund_preserves_integer_schema (test_ledger.LedgerAcceptance.test_refund_preserves_integer_schema) ... ok
+test_refunds_reduce_net_total (test_ledger.LedgerAcceptance.test_refunds_reduce_net_total) ... ok
+test_reordered_header (test_ledger.LedgerAcceptance.test_reordered_header) ... ok
+test_supported_numeric_boundaries (test_ledger.LedgerAcceptance.test_supported_numeric_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.159s
+
+OK

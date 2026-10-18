@@ -1,79 +1,79 @@
 ---
 name: codex-multi-agent-coordination
-description: "Coordinate Codex subagents working on one task with explicit ownership, bounded delegation, evidence-based decisions, and safe handoffs. Use for multi-agent implementation or review, overlapping edits, duplicate work, stale results, or agents repeatedly overturning one another (多代理协作、子代理冲突、左右脑互搏). Do not activate for ordinary single-agent work or merely to create separate user chats."
+description: "Coordinate Codex subagents working on one task with explicit ownership, bounded delegation, evidence-based decisions, and safe handoffs. Use for multi-agent implementation or review, overlapping edits, duplicate work, stale results, or agents repeatedly overturning one another. Do not activate for ordinary single-agent work or merely to create separate user chats."
 ---
 
-# Codex 多代理协作
+# Codex Multi-Agent Coordination
 
-把同一任务里的代理组织成可收敛的协作：主代理维护目标、边界和集成；子代理交付有范围、有证据的结果。保留独立判断，但不要让多个代理同时充当整个任务的负责人。
+Keep agents working toward one deliverable. The main agent owns the goal, boundaries, decisions, and integration. Subagents deliver bounded results with evidence, retaining independent judgment within their assignments.
 
-这是协作协议，不是文件锁或沙箱。真实权限、上级指令和用户要求仍然优先；代理没有获得超出原任务的发送、发布、删除或配置修改权限。
+This is a cooperation protocol, not a file lock or sandbox. Actual permissions, higher-priority instructions, and user requirements still apply. Delegation does not grant additional authority to send, publish, delete, or change configuration.
 
-## 先确定自己处于哪一侧
+## Identify your role
 
-- **主代理**：按下面的流程拆分、委派、收敛和交付。仅在确有独立工作、工具可用且当前指令允许时启动子代理。
-- **子代理**：执行收到的任务契约；只在获分配范围内写入。不要重新拆解全局任务、接管协调、指挥同级代理或自行继续派生代理。发现契约缺项时，向主代理说明最小缺口，同时推进不依赖它的部分。
-- **没有子代理工具**：按依赖顺序直接完成工作，并如实说明未启用并行；不要用新建用户聊天、嵌套 CLI 会话或伪造工具调用替代。
+- **Main agent:** Divide, delegate, resolve, integrate, and deliver. Spawn subagents only when independent work exists, tools are available, and current instructions permit delegation.
+- **Subagent:** Follow your contract and write only within its scope. Do not re-plan the entire assignment, take over coordination, direct peers, or spawn further agents without an explicit delegation grant. Report missing contract details and continue unaffected work.
+- **No subagent tools:** Complete work in dependency order and disclose sequential execution. Do not substitute user-chat creation, nested CLI sessions, or invented calls.
 
-第一次接入某个 Codex 运行环境时，按需读 [references/codex-tools.md](references/codex-tools.md)。使用当前实际暴露的工具和参数，不把文档里的工具名当成所有客户端的固定 API。
+For an unfamiliar runtime, read [references/codex-tools.md](references/codex-tools.md) as needed. Use the tools and parameters actually exposed in the current session.
 
-## 1. 只拆分能独立交付的工作
+## 1. Delegate independently deliverable work
 
-先明确用户要得到的结果、必须保留的行为和验收依据。把这些作为当前基线；无需为了并行先扫描全部仓库。
+Establish the requested outcome, behavior to preserve, and acceptance evidence as the current baseline. Parallel work does not require a full repository survey.
 
-优先分配独立文件或模块、只读调查、针对已冻结版本的审查。两个代理若必须频繁协商同一个接口，先由一个负责人确定接口，再并行下游实现。强依赖的工作串行；不要让多个代理各做一套完整方案后相互覆盖。
+Prefer independent files or modules, read-only investigation, and review against a fixed snapshot. If tasks depend heavily on the same interface, assign one owner to settle it before parallelizing downstream work. Serialize strong dependencies instead of commissioning competing complete implementations.
 
-使用足够完成工作的最少代理，并遵守运行时并发限制。主代理可以同时推进自己的独立部分，但不重复执行已委派任务。除非任务明确要求比较候选方案，不派多个代理解决同一个问题。
+Use the fewest agents that provide a useful benefit, within runtime limits. The coordinator may advance its own independent work, but should not duplicate delegated tasks. Assign competing solutions only when comparison is part of the requested task.
 
-## 2. 分配前写清任务契约
+## 2. Define a contract before delegation
 
-每个任务至少明确：
+Identify these fields for each task:
 
-- `task_id`、`assignment_epoch`（该任务每次改派或实质变更时递增）、负责人和结果接收方。
-- 目标、明确不做的内容、输入基线或快照、已确定的接口与决策。
-- 可写的文件或目录、独占资源；没有写权限就标为只读。主代理自身也遵守所有权。
-- 依赖、可验证的验收标准、停止条件和回报格式。
+- `task_id`, `assignment_epoch`, owner, and recipient. Increment the task's epoch when reassigning it or materially changing its contract.
+- Goal, exclusions, input baseline or snapshot, and settled interfaces or decisions.
+- Writable files or directories and exclusive resources. Without write permission, the assignment is read-only. The coordinator also respects ownership.
+- Dependencies, verifiable acceptance criteria, stopping condition, and return format.
 
-简单任务可直接放在委派消息里；出现多个写入者、接口变动或多轮交接时，由主代理维护一份精简台账，放在项目允许的临时目录，例如 `work/coordination.md`。只有主代理更新台账，子代理通过消息提交变更建议。不要为小任务强制引入框架或配置。
+For a simple task, put the contract in its delegation message. With multiple writers, changing interfaces, or repeated handoffs, keep a small coordinator-owned ledger in an allowed scratch location, such as `work/coordination.md`. Subagents propose ledger changes through messages. Do not introduce a framework or configuration for a small assignment.
 
-准备委派消息时读 [references/task-contracts.md](references/task-contracts.md)，只取当前需要的模板。默认把角色限制为当前子任务；没有明确委派权限时不继续派生代理。
+Read [references/task-contracts.md](references/task-contracts.md) when preparing messages and use only relevant templates. Limit each role to its subtask unless further delegation is explicitly granted.
 
-## 3. 写入所有权先于并行
+## 3. Assign write ownership before parallel execution
 
-**同一时段，同一文件或共享可变资源只有一个写入负责人。** 所有权按规范化后的实际路径和资源判断，父目录授权包含子目录；不同文件名、软链接或大小写差异不能掩盖重叠。
+**At any moment, each file or shared mutable resource has one write owner.** Resolve actual paths and resource identities; directory ownership includes descendants. Aliases, symlinks, or case differences must not conceal overlapping access.
 
-- 共享工作区：把文件集合拆开。多个代理需要修改同一文件时，指定一个写入者，其余给出建议或补丁文本；也可在确认停写后按阶段交接。
-- 单独 worktree：明确基线、分支和集成负责人。隔离文件并不隔离共享数据库、端口、缓存、外部服务，也不自动消除接口冲突。不要假定未提交改动会复制过去。
-- 依赖锁文件、公共类型、导出入口、全仓格式化、生成目录，以及 Git 索引和分支操作都要有负责人。子代理只运行契约允许且不会影响其他任务的命令；测试若会生成文件或改共享状态，也属于写入。
+- **Shared checkout:** Partition files. If several agents need the same file, appoint one writer and have others submit proposals or patch text, or transfer ownership between verified quiet stages.
+- **Separate worktrees:** Record baseline, branch, and integration owner. File isolation does not isolate shared databases, ports, caches, or external services, and does not resolve interface disagreements. Uncommitted input is not automatically copied.
+- Assign owners for dependency lockfiles, shared types, export entrypoints, repository-wide formatting, generated output, the Git index, and branch operations. Commands must respect ownership. Tests that generate files or change shared state are also writers.
 
-需要接管、撤销或处理资源争用时，读 [references/conflict-recovery.md](references/conflict-recovery.md)。**发出停止消息、请求中断或等待超时，都不等于旧写入者已经停止。** 确认代理和它启动的工具、进程已停止写入，检查现状，再释放旧所有权并发出新 epoch。无法确认时，保持受影响资源冻结，推进其他工作。
+For takeover, revocation, or resource conflicts, read [references/conflict-recovery.md](references/conflict-recovery.md). **A stop message, interrupt request, or timeout does not establish that the old writer has stopped.** Verify the agent and its tools or processes are no longer writing, inspect current state, then release ownership and issue the new epoch. If stopping cannot be verified, freeze the affected resource and continue independent work.
 
-## 4. 通信传事实，决策有归属
+## 4. Exchange facts and assign decisions
 
-消息以 `task_id + assignment_epoch` 开头，说明事实、影响、证据及所需动作。完成时返回产物位置、实际变更、运行过的检查和未解决限制；不要复制完整思考过程。
+Prefix messages with `task_id + assignment_epoch`. State the fact, impact, evidence, and requested action. Completion reports include artifact locations, actual changes, executed checks, and unresolved limits, rather than an internal reasoning transcript.
 
-子代理可在契约内自行决定实现细节。涉及接口、其他负责人的文件、验收标准或全局方案时，向主代理提案；不要先越界修改再要求别人跟进。经允许的同级沟通用于交换事实，不赋予同级改派或扩大写入范围的权力。
+Subagents decide implementation details within their contracts. Changes to an interface, another owner's files, acceptance criteria, or the overall approach require a coordinator proposal before writing. Allowed peer communication exchanges facts; it cannot reassign tasks or expand permission.
 
-主代理处理分歧时：
+For a disagreement, the coordinator should:
 
-1. 区分**可复现缺陷、需求歧义、实现偏好**。实际失败和明确要求优先于个人偏好。
-2. 就同一争点收集一轮必要证据；能用小规模检查裁定时直接验证，不召集代理投票或无期限辩论。
-3. 在现有授权内作出一个决定，记录理由、影响范围和重新讨论的触发条件，并只通知受影响代理。
+1. Distinguish a **reproducible defect, requirement ambiguity, or implementation preference**. Observable failure and explicit requirements outrank preference.
+2. Collect one useful round of necessary evidence. Run a small discriminating check when possible, instead of polling agents or extending debate indefinitely.
+3. Decide within existing authorization; record reason, affected scope, and reopening conditions; notify only affected agents.
 
-没有新证据就沿用已定方案，不因换了审查者而重做。新的复现、失败检查、约束变化或用户纠正可以重开；“已经决定”不能成为忽略真实缺陷的理由。只有涉及用户目标、权限或无法合理推断的重大取舍，才向用户提出一个聚焦问题。
+Keep a settled approach when no new evidence exists. A new reproduction, failed check, changed constraint, or user correction may reopen it; a previous decision cannot excuse a real defect. Ask the user only about material goals, permissions, or choices that cannot reasonably be inferred.
 
-## 5. 结果提交后再集成
+## 5. Integrate submitted results
 
-子代理满足停止条件后提交结果并停止写入，等待明确的新任务。审查者默认只读，对准约定基线和验收标准，给出位置、触发条件及影响；风格偏好标为可选建议，不把它变成新的验收门槛。
+Subagents stop writing when submitting a completed assignment and wait for an explicit new contract. Reviewers are read-only by default, use the agreed baseline and criteria, and report location, trigger, and impact. Label style preferences as optional rather than adding acceptance gates.
 
-主代理先核对 task、epoch、输入版本和实际产物，再接受结果。旧 epoch 的结论只能作为待复核证据，不能直接覆盖新任务的结果。共享工作区中改动已在原处，勿再次套用同一补丁；独立 worktree 才按项目流程集成提交。不能按“最后收到的答案”选择版本。
+Before accepting a result, verify task, epoch, input version, and actual artifacts. Old-epoch results are evidence requiring revalidation, not permission to overwrite current work. Shared-checkout edits already exist in place; do not apply their patches twice. Integrate separate-worktree commits according to the project workflow. Arrival order does not select the winning version.
 
-在待审范围稳定或已有明确快照后开展最终审查；同时进行的审查只能算针对当时版本的初步发现。发现问题后给原负责人一个边界明确的修复任务，或完成停写交接后由主代理修复。没有新变化、失败或疑点时，不反复开新一轮全量审查。
+Perform final review after the affected scope is stable or has an explicit snapshot. Concurrent reviews are preliminary findings about their observed version. Assign bounded fixes to the existing owner, or complete a verified handoff before another writer takes over. Do not restart full review without a new change, failure, or unresolved concern.
 
-## 6. 收敛到用户需要的结果
+## 6. Converge on the user's outcome
 
-工具等待应有边界；利用空档完成独立工作，不高频轮询，也不把沉默当作失败或完成。依赖阻塞时先解除依赖、缩小契约或改为串行；不要为了显得忙碌复制同一个任务。
+Wait with bounds and use available time for independent work. Avoid frequent polling; do not interpret silence as failure or completion. Resolve dependencies, narrow a contract, or serialize work before commissioning duplicate efforts.
 
-交付前确认：必需子任务已接受或有明确阻塞；相关写入者及工具已停止影响最终产物；集成版本满足约定验收，检查覆盖了修改的行为。只报告真实运行过的验证。
+Before delivery, confirm required tasks are accepted or explicitly blocked; relevant agents and tools have stopped affecting final artifacts; and the integrated version satisfies agreed acceptance. Report only executed checks.
 
-由主代理给用户一个统一结果，说明完成内容、验证和实际限制。合理异议保留证据；已解决争点不逐一重述。工作不能仅停在分工表、代理报告或未经集成的多个版本。
+The main agent returns one coherent outcome with completed work, verification, and real limits. Preserve unresolved evidence without replaying every settled debate. A division-of-work table, collection of reports, or unintegrated alternatives is not a finished deliverable.

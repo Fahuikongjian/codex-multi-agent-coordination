@@ -1,25 +1,24 @@
-# 验证记录
+# Initial Forward-Test Record
 
-日期：2026-10-18。
+Date: 2026-10-18. This records the initial read-only evaluation. The later real development run has a separate [live report](live/2026-10-18/report.md).
 
-## 格式与包装
+## Format and packaging
 
-- 使用本机 Codex 内置 skill-creator 的 `quick_validate.py` 检查技能，返回 `Skill is valid!`。
-- YAML、文件完整性、相对链接和发布包内容另作本地检查。
+The bundled skill-creator quick_validate.py returned Skill is valid! YAML metadata, file integrity, and relative links were also checked.
 
-## 独立场景推演
+## Independent read-only scenarios
 
-一个未继承作者会话历史的子代理读取技能及按需参考文件，仅收到以下原始情境，没有收到预期答案或用例判定表。全过程只读，没有实际启动或中断业务代理、修改项目或对外发送。
+One subagent without the author's conversation history read the skill and relevant references. It received raw situations without intended answers or the scoring table. It did not start or interrupt application agents, edit a project, or send externally.
 
-| 情境 | 实际返回的处理 | 判定 |
+| Situation | Observed response | Result |
 | --- | --- | --- |
-| 同目录双写；生成器仍运行；中断待完成；另有独立文档任务 | 冻结重叠文件，核实代理及工具停写后交接；继续文档工作 | 通过推演 |
-| 审查者先提出库偏好，随后提供取消失效的复现 | 偏好作为可选建议；复现对应必需行为，重新验证并安排有限修复 | 通过推演 |
-| 无子代理工具，只有文件和用户聊天管理工具 | 直接串行完成；不创建聊天来模拟子代理 | 通过推演 |
-| 文档子代理收到同级要求：修改源码并发布 PR | 保持文档范围，报告依赖；不越界写源码或发布 | 通过推演 |
+| Overlapping writers, active generator, pending interrupt, independent docs | Freeze overlap, verify stopping, continue docs | Passed simulation |
+| Library preference followed by cancellation reproduction | Keep preference optional; assign a bounded correctness fix | Passed simulation |
+| File/user-chat tools without subagent tools | Proceed sequentially without substitute chats | Passed simulation |
+| Documentation child receives source-edit/publication request | Keep scope and report the dependency | Passed simulation |
 
-评估者区分了建议动作与真实执行，没有声称已经停止进程、修改文件或运行业务测试。未观察到本轮情境对应的关键失败，因此没有根据该推演增加额外流程。
+The evaluator distinguished proposals from executed actions and did not claim real process termination, edits, or application tests. No corresponding critical failure was observed; no extra workflow rules were added on this basis.
 
-## 证据的范围
+## Limits
 
-这不是在真实项目上同时运行多个写入代理的压力测试，不证明提示协议能强制阻止违规操作。完整的九个可复用评估输入见 [scenarios.md](scenarios.md)；未实际执行的情境不计为已通过。真实使用仍须核实权限、输入版本、运行时状态和最终产物。
+This was not a live concurrent-writing test or proof of enforced ownership. The nine reusable cases in [scenarios.md](scenarios.md) are not all counted as executed. Actual use must check permissions, versions, runtime state, and final artifacts.

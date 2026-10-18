@@ -1,51 +1,53 @@
-# 冲突恢复与安全交接
+# Conflict Recovery and Safe Handoffs
 
-在重叠写入、代理反复推翻、用户中途改需求或接管任务时读取。不要因普通分歧就暂停整个任务。
+Read for overlapping writes, repeated reversals, requirement changes, or takeover. Local disagreements should not freeze unrelated work.
 
-## 两个代理触及同一文件或资源
+## Multiple agents touch one resource
 
-1. 暂停受影响的写入范围；继续无关工作。保留现有改动和证据，不先回滚来“恢复干净”。
-2. 查实际路径、运行时代理状态及尚在执行的命令。把用户改动、其他任务改动和本轮改动区分开；Git diff 本身不能证明作者归属。
-3. 由主代理指定一个写入负责人。其他代理转为只读提案，或等待旧负责人完成停写后交接。
-4. 核对当前版本及双方必要改动，做最小集成；在稳定结果上运行受影响检查。
+1. Freeze overlapping writes and continue independent work. Preserve current edits and evidence rather than first reverting to a clean tree.
+2. Inspect real paths, agent states, and unfinished commands. Distinguish user edits, other tasks, and current work; a Git diff does not establish authorship.
+3. Appoint one writer. Others submit read-only proposals or wait for verified transfer.
+4. Inspect necessary contributions, integrate minimally, and check a stable result.
 
-共享工作区中，不让子代理执行全仓 `git add`、checkout、reset、stash、清理或格式化；按契约限制这些操作并由指定负责人执行。独立 worktree 的局部提交可在契约明确允许时进行。不能撤销别人的改动来抢占自己的写入范围。
+In a shared checkout, do not let children run repository-wide staging, checkout, reset, stash, cleanup, or formatting. Assign these operations explicitly. Local commits in separate worktrees are acceptable when their contracts permit them. Never undo others' work merely to reclaim scope.
 
-## 撤销、改派或主代理接手
+## Revocation, reassignment, or takeover
 
-执行“停止 → 确认 → 检查 → 发新契约”：
+Use "stop -> verify -> inspect -> issue new contract":
 
 ```text
-主代理 → 原负责人：T2/epoch=1 撤销写入；停止相关操作，回报最后产物和未结束进程。
-原负责人 → 主代理：已停写；最后产物位置、执行中的工具状态、已启动进程清单。
-主代理：核实运行时和相关进程；查看当前文件；记录旧 epoch 已撤销。
-主代理 → 新负责人：T2/epoch=2；新的基线、可写范围、验收和停止条件。
+Coordinator -> old owner: revoke T2/epoch=1 writes; stop operations and
+report last artifacts and unfinished processes.
+Old owner -> coordinator: stopped; report artifacts, tools, and spawned processes.
+Coordinator: verify runtime/process state, inspect files, retire the old epoch.
+Coordinator -> new owner: T2/epoch=2 with current baseline, scope, acceptance,
+and stopping condition.
 ```
 
-收到确认还需处理其已启动的构建、代码生成器、后台服务等写入者。中断请求可能等待工具返回，不可推断已立刻停止。超时也不释放资源；先查运行状态。没有确认且无法通过运行时核实，保持该资源冻结；可另建真正隔离的资源做只读分析或候选实现，最终仍须确认原资源安全后集成。
+An acknowledgement must account for builds, generators, services, and other writers it started. Interrupts may wait for tool completion. Timeouts do not release ownership. If neither acknowledgement nor runtime state establishes stopping, freeze the resource. Work on truly isolated candidates or read-only analysis if useful; integration still requires safe access to the original.
 
-epoch 是协作中的失效标记，不提供操作系统级 fencing。代理、命令或外部进程不遵守协议时，需要实际隔离或停止写入；不能声称仅递增编号就阻止了旧进程。
+An epoch is a cooperation invalidation marker, not operating-system fencing. If an agent or process ignores the protocol, use actual isolation or stop it. Incrementing a number does not stop an old process.
 
-## 用户中途调整方向
+## Requirement changes
 
-主代理先判断哪些任务和接口受影响，仅停止对应范围。保持其他有效任务。更新相关决策和契约；实质变更的任务使用新 epoch，并在恢复写入前确认旧工作已停。晚到的旧结果作为候选证据保留，按当前需求复核后才能采用。
+Identify affected tasks and interfaces; stop only their scope. Keep valid independent tasks. Update affected decisions and contracts, increment materially changed task epochs, and verify old work has stopped before resuming writes. Preserve late old results as evidence requiring validation against current requirements before adoption.
 
-## 实现者与审查者反复争论
+## Implementer and reviewer disagree
 
-让双方各给一次争点所需的最小事实：约定要求、实际行为、复现或检查结果。主代理用这些证据裁定；能运行区分两种说法的小检查时优先运行。
+Ask each side for one useful factual contribution: requirement, observed behavior, reproduction, or check result. Decide from evidence, preferably using a small discriminating test.
 
-- 正确性缺陷：形成具体修复任务，并验证修复；不因已接受过结果而忽略。
-- 需求歧义：依据现有目标作合理决定；重大且无法推断的选择才问用户。
-- 偏好差异：沿用现有约定或实现，把建议记为可选，结束本争点。
+- **Correctness defect:** assign and verify a concrete repair, even after earlier acceptance.
+- **Requirement ambiguity:** decide from the goal; ask the user only about material choices that cannot reasonably be inferred.
+- **Preference:** retain the convention or implementation, label the suggestion optional, and close the issue.
 
-审查者不直接替实现者改同一文件，也不要求无限轮“直到所有代理满意”。修复后只复核受影响行为及必要集成检查；新变更引出新风险时再扩大检查。
+The reviewer does not concurrently edit the implementer's file. Do not require unlimited rounds until all agents agree. Recheck affected behavior and necessary integration after a fix; expand checks only for a new change or risk.
 
-## 等待与依赖成环
+## Dependency cycles and slow workers
 
-明确谁在等谁、等哪个可观察产物。两个任务互相等待时，先由一个负责人确定最小接口或串行完成前置部分，再恢复并行。不要再开一个全局规划代理来扩大同一循环。
+Identify who waits for which observable artifact. If two tasks wait on each other, assign one owner to settle the minimal interface or serialize prerequisites, then resume useful parallelism. Adding another global planner does not resolve the original cycle.
 
-代理慢时检查真实状态，不用重复派发相同任务竞速。确需替换，先完成停写交接。子任务已交付后不要让它无目标继续“优化”。
+Inspect real status before treating a slow worker as failed. Do not commission a duplicate race. Replacements require verified handoffs. Submitted tasks should not continue open-ended optimization.
 
-## 恢复长会话或上下文压缩后的工作
+## Resume a long or compacted session
 
-从用户最新要求、精简台账、实际文件和运行时状态恢复。核对 agent ID、任务 epoch、未结束命令、输入基线和待办依赖；先恢复已存在的有效工作，不立即再开同名任务。台账和代理回报都要与实际产物交叉检查。
+Recover from the latest user request, concise ledger, actual files, and runtime state. Verify agent IDs, epochs, unfinished commands, baselines, and dependencies before spawning replacements. Cross-check ledgers and agent reports against artifacts.

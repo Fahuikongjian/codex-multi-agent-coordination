@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-B",
+    "cli.py",
+    "-"
+  ],
+  "quantity_digits": 2200,
+  "price_whole_digits": 2200,
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<WORKSPACE>\\cli.py\", line 24, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"<WORKSPACE>\\cli.py\", line 19, in main\n    print(json.dumps(result, ensure_ascii=False, sort_keys=True))\n          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Fahuikongjian\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\json\\__init__.py\", line 242, in dumps\n    **kw).encode(obj)\n          ~~~~~~^^^^^\n  File \"C:\\Users\\Fahuikongjian\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\json\\encoder.py\", line 202, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n  File \"C:\\Users\\Fahuikongjian\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\json\\encoder.py\", line 263, in iterencode\n    return _iterencode(o, 0)\nValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit\nwhen serializing dict item 'total_cents'\n"
+}

@@ -1,0 +1,13 @@
+test_file_input_emits_one_json_object_with_exact_integer_total (test_cli.LedgerCLIIntegrationTests.test_file_input_emits_one_json_object_with_exact_integer_total) ... ok
+test_header_only_stdin_emits_zero_totals (test_cli.LedgerCLIIntegrationTests.test_header_only_stdin_emits_zero_totals) ... ok
+test_invalid_amount_reports_error_after_a_valid_row_without_stdout (test_cli.LedgerCLIIntegrationTests.test_invalid_amount_reports_error_after_a_valid_row_without_stdout) ... ok
+test_missing_file_reports_error_without_stdout (test_cli.LedgerCLIIntegrationTests.test_missing_file_reports_error_without_stdout) ... ok
+test_missing_or_extra_row_cells_report_error_without_stdout (test_cli.LedgerCLIIntegrationTests.test_missing_or_extra_row_cells_report_error_without_stdout) ... ok
+test_no_arguments_reports_usage_and_exits_two_without_stdout (test_cli.LedgerCLIIntegrationTests.test_no_arguments_reports_usage_and_exits_two_without_stdout) ... ok
+test_stdin_input_emits_json (test_cli.LedgerCLIIntegrationTests.test_stdin_input_emits_json) ... ok
+test_utf8_bom_file_is_read_successfully (test_cli.LedgerCLIIntegrationTests.test_utf8_bom_file_is_read_successfully) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.548s
+
+OK

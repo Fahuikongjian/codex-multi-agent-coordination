@@ -1,87 +1,89 @@
-# 委派、回报与决策模板
+# Task, Result, and Decision Templates
 
-主代理按任务复杂度删减字段。字段是协作约定，不是 Codex 内建 schema；不要把模板误当成可直接调用的工具参数。
+Trim fields to fit the assignment. These are cooperation conventions, not a built-in Codex schema or tool arguments.
 
-## 委派消息
+## Delegation message
 
 ```text
-任务：T2；assignment_epoch：1
-角色：实现者；结果接收方：主代理
-目标：按已确认接口实现请求超时处理。
-不做：更换 HTTP 库、改返回结构、重构其他模块。
-输入基线：当前工作区中的 client.ts；接口决定 D1。
-可写：src/network/client.ts、tests/network/client.test.ts。
-只读：src/network/types.ts、package.json；其他文件没有写权限。
-独占资源：本任务临时输出目录 work/T2/；不操作共享 Git 索引。
-依赖：D1 已确定；若必须改公共类型，先向主代理提出具体变更。
-验收：超时返回既有 TimeoutError；取消行为不回归；运行相关测试。
-停止：提交结果后停止写入；需要改契约或触及他人资源时只暂停相关部分。
-权限：只在此范围内执行；不另开子代理，不改派同级，不对外发布。
-回报：T2/epoch=1，变更文件，行为说明，验证命令与结果，限制。
+Task: T2; assignment_epoch: 1
+Role: implementer; recipient: main coordinator
+Goal: implement request timeouts against agreed interface D1.
+Exclusions: no new HTTP library, return-schema change, or unrelated refactor.
+Input baseline: current client.ts snapshot and D1.
+Writable: src/network/client.ts and tests/network/client.test.ts.
+Read-only: src/network/types.ts, package.json, and all other files.
+Exclusive resources: work/T2/; no shared Git-index operations.
+Dependencies: D1 is settled; propose shared-type changes to the coordinator.
+Acceptance: use existing TimeoutError; preserve cancellation; run relevant checks.
+Stop: submit and stop writing when done. Pause only affected work if a
+contract change or another owner's resource is needed.
+Authority: no nested agents, peer reassignment, or external publication.
+Return: T2/epoch=1, changed files, behavior, actual checks/results, limits.
 ```
 
-给子代理的提示需要包含关键约束，不要仅说“遵守全局计划”。若提供台账，确保它在该子代理的工作区可访问；跨 worktree 时直接提供相关内容或复制必要输入。全历史继承也不能替代明确任务边界。
+Include essential constraints directly, not just "follow the global plan." A linked ledger must be accessible in the child's workspace. For separate worktrees, copy necessary input or supply relevant content. Full-history inheritance does not replace a clear contract.
 
-不为使用此模板而创造未经用户要求的固定模块、额外测试或新审批步骤。以上路径和命令只是示例。
+The example does not require a particular module layout, extra tests, or new approval gates. Replace example paths and checks with actual task needs.
 
-## 最小任务台账
+## Minimal coordinator ledger
 
 ```markdown
-# 本轮协作
-用户结果：为请求层添加超时，保留既有 API。
-基线：记录实际 commit；有未提交改动时列出相关文件或快照。
-协调者/集成负责人：主代理。
+# Current coordination
+User outcome: add request timeouts while preserving the existing API.
+Baseline: actual commit plus relevant uncommitted files or snapshot.
+Coordinator/integration owner: main agent.
 
-| task | epoch | owner | 可写范围 | 依赖 | 验收 | 状态 |
+| task | epoch | owner | writable scope | dependency | acceptance | state |
 | --- | --- | --- | --- | --- | --- | --- |
-| T1 | 1 | 主代理 | types.ts | 无 | 保留 API，确认超时契约 | accepted |
-| T2 | 1 | worker-a | client.ts、对应测试 | D1 | 超时及取消检查通过 | running |
-| T3 | 1 | worker-b | 使用说明文档 | D1 | 示例符合已定接口 | running |
-| R1 | 1 | reviewer | 无，只读 | T2/T3 提交 | 按同一稳定版本审查 | planned |
+| T1 | 1 | main | types.ts | none | preserve API; settle timeout contract | accepted |
+| T2 | 1 | worker-a | client.ts and its tests | D1 | timeout/cancellation checks | running |
+| T3 | 1 | worker-b | usage documentation | D1 | examples follow agreed API | running |
+| R1 | 1 | reviewer | none; read-only | T2/T3 submitted | review stable snapshot | planned |
 
-共享资源：Git 索引、依赖锁文件、最终构建由主代理负责。
-决策 D1：沿用 TimeoutError；仅发现兼容性失败或用户改需求时重开。
+Shared resources: main owns Git index, dependency lockfiles, and final build.
+D1: retain TimeoutError; reopen for compatibility failures or changed requirements.
 ```
 
-把示例中的简写文件名替换为仓库内无歧义的路径。需要时补充工作区根目录、资源实例和运行时 agent ID；不同工作区的相同相对路径不是同一文件，指向同一真实目录的不同别名也不是隔离。
+Replace abbreviated filenames with unambiguous paths. Add workspace roots, resource instances, and actual agent IDs as needed. Identical relative paths in separate checkouts are different files; aliases of the same real directory are not isolation.
 
-可用状态是 `planned → running → submitted → accepted`，也可标为 `blocked` 或 `cancelled`。`submitted` 表示已停止写入，`accepted` 表示主代理已检查并接纳；两者不要混淆。epoch 只针对对应任务变更，不因另一个无关任务更新台账就作废所有结果。
+Useful states: `planned -> running -> submitted -> accepted`, with `blocked` or `cancelled` when applicable. `submitted` means writing has stopped; `accepted` means the coordinator checked and accepted the result. Increment only the affected task's epoch, not every unrelated ledger update.
 
-## 发现依赖或分歧
+## Dependency or disagreement report
 
 ```text
-T2/epoch=1 · 需要决定
-事实：当前 TimeoutError 不接受 cause；已在 types.ts 复核。
-影响：不阻碍超时实现，但影响错误追踪。
-证据：文件位置或最小复现。
-建议：保留现有结构；若追踪为必需，由 T1 的负责人扩展公共类型。
-当前动作：继续不依赖该决定的部分，不修改 types.ts。
-所需动作：主代理确认是否扩大范围。
+T2/epoch=1 - decision needed
+Fact: TimeoutError has no cause parameter; verified in types.ts.
+Impact: timeout implementation can proceed, but tracing would be limited.
+Evidence: file location or minimal reproduction.
+Proposal: keep the structure; ask the T1 owner to extend it if tracing is required.
+Current action: continue independent work; do not modify types.ts.
+Requested action: coordinator decides whether scope should change.
 ```
 
-如果当前指令不允许直接给其他代理发消息，使用运行时允许的父级结果回传机制。不要以“协调需要”为由绕过通信权限或创建用户聊天。
+If direct agent messaging is unavailable or unauthorized, use the allowed parent-reporting mechanism. Coordination does not authorize bypassing communication boundaries or creating user chats.
 
-## 完成回报
+## Completion report
 
 ```text
-T2/epoch=1 · submitted（已停止写入）
-基线：实际读取的输入版本；若基线在执行中变化，说明受影响部分。
-结果：超时被映射为现有 TimeoutError，主动取消仍保持原行为。
-产物：实际文件路径；独立 worktree 再附分支或提交标识。
-变更：列出自己修改的文件；共享区未提交改动不能全算作自己的工作。
-验证：实际命令、退出状态和关键结果；未运行的明确写明。
-限制：无，或具体未完成项和原因。
+T2/epoch=1 - submitted; writing stopped
+Baseline: actual input version; disclose relevant changes during execution.
+Result: timeouts use TimeoutError; caller cancellation keeps its behavior.
+Artifacts: actual paths; add branch/commit only for a separate worktree.
+Changes: this task's files, not every uncommitted shared-checkout file.
+Verification: actual commands, exit status, and key results; identify checks not run.
+Limits: none, or specific incomplete work and its reason.
 ```
 
-## 决定与重开
+## Decision and reopening conditions
 
 ```text
-D2 · 适用 T2、T3
-争点：错误结构是否新增字段。
-依据：用户要求保持 API；现有调用方检查覆盖当前返回结构。
-决定：保持现有结构；新增追踪字段不在本次范围。
-后续：T2 继续实现，T3 采用同一示例。
-重开条件：发现当前结构无法满足明确需求的可复现证据，或用户修改要求。
+D2 - affects T2 and T3
+Issue: whether the error structure gains a field.
+Evidence: user requires API compatibility; caller checks cover the schema.
+Decision: preserve the structure; tracing fields are outside this task.
+Next: T2 continues; T3 uses the same interface.
+Reopen: reproducible evidence of failure against an explicit requirement,
+or a user requirement change.
 ```
 
-决策记录用来保存依据，不能把主代理偏好提升为比用户指令或失败证据更高的规则。
+A decision record preserves its basis; coordinator preference cannot outrank user requirements or failure evidence.

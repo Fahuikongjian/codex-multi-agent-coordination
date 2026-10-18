@@ -1,0 +1,99 @@
+test_large_input_is_validation_error_not_traceback (test_cli_regression.LargeNumberCliRegression.test_large_input_is_validation_error_not_traceback) ... FAIL
+test_all_refund_ledger (test_ledger.LedgerAcceptance.test_all_refund_ledger) ... ok
+test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) ... ok
+test_blank_identifier (test_ledger.LedgerAcceptance.test_blank_identifier) ... ok
+test_bom (test_ledger.LedgerAcceptance.test_bom) ... ok
+test_duplicate_ids (test_ledger.LedgerAcceptance.test_duplicate_ids) ... ok
+test_empty_lines (test_ledger.LedgerAcceptance.test_empty_lines) ... ok
+test_exact_decimal_total (test_ledger.LedgerAcceptance.test_exact_decimal_total) ... ok
+test_header_only_is_empty (test_ledger.LedgerAcceptance.test_header_only_is_empty) ... ok
+test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) ... ok
+test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) ... ok
+test_large_price_without_float_loss (test_ledger.LedgerAcceptance.test_large_price_without_float_loss) ... ok
+test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) ... ok
+test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) ... 
+  test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) (digits=31) ... FAIL
+  test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) (digits=4301) ... FAIL
+test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) ... 
+  test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) (digits=19) ... FAIL
+  test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) (digits=4301) ... FAIL
+test_quantity_and_cell_whitespace (test_ledger.LedgerAcceptance.test_quantity_and_cell_whitespace) ... ok
+test_quoted_identifier (test_ledger.LedgerAcceptance.test_quoted_identifier) ... ok
+test_refund_preserves_integer_schema (test_ledger.LedgerAcceptance.test_refund_preserves_integer_schema) ... ok
+test_refunds_reduce_net_total (test_ledger.LedgerAcceptance.test_refunds_reduce_net_total) ... ok
+test_reordered_header (test_ledger.LedgerAcceptance.test_reordered_header) ... ok
+test_supported_numeric_boundaries (test_ledger.LedgerAcceptance.test_supported_numeric_boundaries) ... ok
+
+======================================================================
+FAIL: test_large_input_is_validation_error_not_traceback (test_cli_regression.LargeNumberCliRegression.test_large_input_is_validation_error_not_traceback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_cli_regression.py", line 12, in test_large_input_is_validation_error_not_traceback
+    self.assertEqual(result.returncode, 2, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : Traceback (most recent call last):
+  File "<WORKSPACE>\cli.py", line 24, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "<WORKSPACE>\cli.py", line 19, in main
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fahuikongjian\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 242, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Fahuikongjian\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Fahuikongjian\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+ValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit
+when serializing dict item 'total_cents'
+
+
+======================================================================
+FAIL: test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) (digits=31)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 84, in test_oversized_price_is_field_validation
+    with self.subTest(digits=digits), self.assertRaisesRegex(ValueError, "unit_price"):
+                                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_oversized_price_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_price_is_field_validation) (digits=4301)
+----------------------------------------------------------------------
+ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 4301 digits; use sys.set_int_max_str_digits() to increase the limit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 84, in test_oversized_price_is_field_validation
+    with self.subTest(digits=digits), self.assertRaisesRegex(ValueError, "unit_price"):
+                                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "unit_price" does not match "Exceeds the limit (4300 digits) for integer string conversion: value has 4301 digits; use sys.set_int_max_str_digits() to increase the limit"
+
+======================================================================
+FAIL: test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) (digits=19)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 79, in test_oversized_quantity_is_field_validation
+    with self.subTest(digits=digits), self.assertRaisesRegex(ValueError, "quantity"):
+                                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_oversized_quantity_is_field_validation (test_ledger.LedgerAcceptance.test_oversized_quantity_is_field_validation) (digits=4301)
+----------------------------------------------------------------------
+ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 4301 digits; use sys.set_int_max_str_digits() to increase the limit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 79, in test_oversized_quantity_is_field_validation
+    with self.subTest(digits=digits), self.assertRaisesRegex(ValueError, "quantity"):
+                                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "quantity" does not match "Exceeds the limit (4300 digits) for integer string conversion: value has 4301 digits; use sys.set_int_max_str_digits() to increase the limit"
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.263s
+
+FAILED (failures=5)

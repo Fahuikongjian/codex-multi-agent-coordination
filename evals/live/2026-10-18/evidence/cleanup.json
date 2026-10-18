@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "date": "2026-10-18",
+  "method": "Windows Recycle Bin",
+  "recoverable": true,
+  "removed_from_working_directory": [
+    "multi-agent-live-20261018-141db41f",
+    "skill-venv",
+    "published-check",
+    "publish-tree.json",
+    "live-test-session.json"
+  ],
+  "remaining_working_test_cache_directories": 0,
+  "remaining_working_test_bytecode_files": 0,
+  "test_cache_directories_cleared": 3,
+  "test_bytecode_files_cleared": 4,
+  "permanent_deletion_attempts_blocked": 2,
+  "original_tool_reason": "blocked by policy",
+  "global_caches_cleared": false,
+  "installed_skill_preserved": true,
+  "artifacts_preserved": true
+}

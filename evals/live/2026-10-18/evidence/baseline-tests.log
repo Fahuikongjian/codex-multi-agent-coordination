@@ -1,0 +1,369 @@
+test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) ... 
+  test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='') ... ERROR
+  test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity\n') ... ERROR
+  test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity,unit_price,extra\n') ... ERROR
+  test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity,quantity\n') ... ERROR
+test_blank_identifier (test_ledger.LedgerAcceptance.test_blank_identifier) ... ERROR
+test_bom (test_ledger.LedgerAcceptance.test_bom) ... ERROR
+test_duplicate_ids (test_ledger.LedgerAcceptance.test_duplicate_ids) ... ERROR
+test_empty_lines (test_ledger.LedgerAcceptance.test_empty_lines) ... ERROR
+test_exact_decimal_total (test_ledger.LedgerAcceptance.test_exact_decimal_total) ... ERROR
+test_header_only_is_empty (test_ledger.LedgerAcceptance.test_header_only_is_empty) ... ERROR
+test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) ... 
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='-1') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='NaN') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='Infinity') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='1.234') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='1e2') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='') ... ERROR
+  test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='+1.00') ... ERROR
+test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) ... 
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='0') ... ERROR
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='1.5') ... ERROR
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='x') ... ERROR
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='+1') ... ERROR
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='') ... ERROR
+  test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='-0') ... ERROR
+test_large_price_without_float_loss (test_ledger.LedgerAcceptance.test_large_price_without_float_loss) ... ERROR
+test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) ... 
+  test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) (row='a,1\n') ... ERROR
+  test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) (row='a,1,1.00,extra\n') ... ERROR
+test_quantity_and_cell_whitespace (test_ledger.LedgerAcceptance.test_quantity_and_cell_whitespace) ... ERROR
+test_quoted_identifier (test_ledger.LedgerAcceptance.test_quoted_identifier) ... ERROR
+test_reordered_header (test_ledger.LedgerAcceptance.test_reordered_header) ... ERROR
+test_revision_1_rejects_refund (test_ledger.LedgerAcceptance.test_revision_1_rejects_refund) ... ERROR
+
+======================================================================
+ERROR: test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 31, in test_bad_headers
+    summarize_orders(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 31, in test_bad_headers
+    summarize_orders(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity,unit_price,extra\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 31, in test_bad_headers
+    summarize_orders(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_bad_headers (test_ledger.LedgerAcceptance.test_bad_headers) (text='order_id,quantity,quantity\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 31, in test_bad_headers
+    summarize_orders(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_blank_identifier (test_ledger.LedgerAcceptance.test_blank_identifier)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 54, in test_blank_identifier
+    summarize_orders(HEADER + " ,1,1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_bom (test_ledger.LedgerAcceptance.test_bom)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 20, in test_bom
+    self.assertEqual(summarize_orders("\ufeff" + HEADER + "a,1,2.5\n")["total_cents"], 250)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_duplicate_ids (test_ledger.LedgerAcceptance.test_duplicate_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 50, in test_duplicate_ids
+    summarize_orders(HEADER + "a,1,1.00\n a ,2,2.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_empty_lines (test_ledger.LedgerAcceptance.test_empty_lines)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 57, in test_empty_lines
+    self.assertEqual(summarize_orders(HEADER + "\na,1,1\n\n"), {"order_count": 1, "total_cents": 100})
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_exact_decimal_total (test_ledger.LedgerAcceptance.test_exact_decimal_total)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 11, in test_exact_decimal_total
+    self.assertEqual(summarize_orders(HEADER + "a,1,0.10\nb,1,0.20\n"), {"order_count": 2, "total_cents": 30})
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_header_only_is_empty (test_ledger.LedgerAcceptance.test_header_only_is_empty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 8, in test_header_only_is_empty
+    self.assertEqual(summarize_orders(HEADER), {"order_count": 0, "total_cents": 0})
+                     ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='NaN')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='Infinity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='1.234')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='1e2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_prices (test_ledger.LedgerAcceptance.test_invalid_prices) (value='+1.00')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 41, in test_invalid_prices
+    summarize_orders(HEADER + f"a,1,{value}\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='1.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='+1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_invalid_quantities (test_ledger.LedgerAcceptance.test_invalid_quantities) (value='-0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 36, in test_invalid_quantities
+    summarize_orders(HEADER + f"a,{value},1.00\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_large_price_without_float_loss (test_ledger.LedgerAcceptance.test_large_price_without_float_loss)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 17, in test_large_price_without_float_loss
+    self.assertEqual(summarize_orders(HEADER + "a,3,1000000000000000.01\n")["total_cents"], 300000000000000003)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) (row='a,1\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 46, in test_missing_or_extra_cells
+    summarize_orders(HEADER + row)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_missing_or_extra_cells (test_ledger.LedgerAcceptance.test_missing_or_extra_cells) (row='a,1,1.00,extra\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 46, in test_missing_or_extra_cells
+    summarize_orders(HEADER + row)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_quantity_and_cell_whitespace (test_ledger.LedgerAcceptance.test_quantity_and_cell_whitespace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 14, in test_quantity_and_cell_whitespace
+    self.assertEqual(summarize_orders(HEADER + " a , 3 , 1.25 \n")["total_cents"], 375)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_quoted_identifier (test_ledger.LedgerAcceptance.test_quoted_identifier)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 23, in test_quoted_identifier
+    self.assertEqual(summarize_orders(HEADER + '"a,b",2,1.01\n')["total_cents"], 202)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_reordered_header (test_ledger.LedgerAcceptance.test_reordered_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 26, in test_reordered_header
+    self.assertEqual(summarize_orders("quantity,unit_price,order_id\n2,1.50,a\n"), {"order_count": 1, "total_cents": 300})
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+======================================================================
+ERROR: test_revision_1_rejects_refund (test_ledger.LedgerAcceptance.test_revision_1_rejects_refund)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>\acceptance\test_ledger.py", line 61, in test_revision_1_rejects_refund
+    summarize_orders(HEADER + "refund,-1,1.20\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>\ledger.py", line 4, in summarize_orders
+    raise NotImplementedError("T1 implementation pending")
+NotImplementedError: T1 implementation pending
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.011s
+
+FAILED (errors=30)

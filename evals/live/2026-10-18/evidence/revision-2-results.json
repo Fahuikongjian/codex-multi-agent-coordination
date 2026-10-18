@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-18",
+  "baseline_commit": "db8fc4d4abeafe39ac293bd10c7e52af021ce459",
+  "final_fixture_commit": "41eba46b2ef07bff98e832f34932bf23576054f8",
+  "suites": [
+    {
+      "suite": "final-acceptance",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "acceptance",
+        "-v"
+      ],
+      "exit_code": 0,
+      "summary": [
+        "Ran 17 tests in 0.001s",
+        "OK"
+      ]
+    },
+    {
+      "suite": "final-cli",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "summary": [
+        "Ran 8 tests in 2.497s",
+        "OK"
+      ]
+    }
+  ],
+  "total_final_tests": 25,
+  "manual_cli_cases": 3,
+  "ledger_sha256": "3d7d98b0670f6790dcb2c3ba06b5a7dfe26b2476085eb8546ccb048aa419022d",
+  "cli_tests_sha256": "681bed0c5e811c887a47889f5d456e96748fb0d9d523db427040bf551e82a09a",
+  "stale_candidate_replay": {
+    "candidate_epoch": 1,
+    "current_epoch": 2,
+    "result": "rejected_as_obsolete",
+    "executed_candidate_result": "ValueError: line 4: quantity must be greater than zero",
+    "current_ledger_sha256_before": "3d7d98b0670f6790dcb2c3ba06b5a7dfe26b2476085eb8546ccb048aa419022d",
+    "current_ledger_sha256_after": "3d7d98b0670f6790dcb2c3ba06b5a7dfe26b2476085eb8546ccb048aa419022d"
+  },
+  "source_hashes": {
+    "ledger.py": "3d7d98b0670f6790dcb2c3ba06b5a7dfe26b2476085eb8546ccb048aa419022d",
+    "cli.py": "3ce09353990fafbe4a71eea8566ebc5185748d3c5c801a18f90fa9f00212df04",
+    "SPEC.md": "bb25d4bb95f4bb17a092289213f6937d44ed9878aa4a7c9837b092f3c4551d9f",
+    "coordination.md": "835bafd119aadb493cddce38ac5fc9108b0ff2eb511db1defd53cc973ff82d75",
+    "acceptance/test_ledger.py": "4ecb4b7f56e52eeb31c2c56228f3c4f2b85bffa9ee72e8b0ae7154838e3e57af",
+    "tests/test_cli.py": "681bed0c5e811c887a47889f5d456e96748fb0d9d523db427040bf551e82a09a"
+  },
+  "final_english_skill_hashes": {
+    "SKILL.md": "05cd884522d0c946eff69cea076d73da3ac99520ed3f92cb9660aca2227e1dc6",
+    "agents/openai.yaml": "b2089baebc4eec3c95313b07d578b92152c6524d423b8234d2f2b669899fae4b",
+    "references/codex-tools.md": "ed4cf587d3a0ac8f122ca16572393c1e007f076378fdb14efd78447cd1833330",
+    "references/conflict-recovery.md": "c2dd72adda79163c367a798169130604eff758dcd93f4e6f437f5eaf36cbbbd6",
+    "references/task-contracts.md": "26bc0182ee80ff005a0f73100b6e363a51626de45000518db5b375a517389b6a"
+  }
+}

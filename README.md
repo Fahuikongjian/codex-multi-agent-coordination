@@ -1,83 +1,85 @@
-# Codex 多代理协作 Skill
+# Codex Multi-Agent Coordination
 
-让 Codex 的主代理与子代理围绕同一目标工作，减少重复实现、互改文件、审查拉扯和旧方案覆盖新方案。
+A Codex skill for agents working toward one deliverable. It reduces duplicate work, overlapping edits, review ping-pong, and obsolete results overriding current requirements.
 
-适合多 agent 联合实现、并行审查，以及已经出现“左右脑互搏”的任务。普通小改动仍由一个代理直接完成。技能以中文编写，提供英文检索描述，不绑定模型或操作系统。
+Use it for multi-agent implementation, review, or conflict recovery. Small tasks can stay single-agent. All instructions, display metadata, prompts, and documentation are in English. No particular model or operating system is required.
 
-## 解决哪些冲突
+## Problems addressed
 
-| 常见问题 | 采用的协作方式 |
+| Problem | Coordination mechanism |
 | --- | --- |
-| 多个代理各自重做整件事 | 主代理统一目标，子任务有明确交付边界 |
-| 两个代理同时修改一个文件 | 单写入负责人；其他代理只提案，或停写后交接 |
-| 实现者和审查者反复推翻 | 用需求和复现裁定；无新证据沿用已定方案 |
-| 旧任务结果晚到，覆盖新需求 | 任务 epoch 与输入基线复核；旧结果先验证再采用 |
-| 中断旧代理后立即让新人接手 | 核实代理、工具及后台进程停写，再转移所有权 |
-| worktree 分开了仍抢端口、数据库 | 同时分配共享资源与文件所有权 |
-| 子代理完成后主代理只拼报告 | 集成实际产物，检查最终版本，再统一交付 |
+| Several agents redo the whole task | One coordinator and bounded subtasks |
+| Multiple writers edit one file | One owner, proposals from others, verified handoffs |
+| Review keeps reversing decisions | Evidence and explicit reopening conditions |
+| Old results conflict with changed requirements | Task epochs and baseline validation |
+| Replacement starts before the old writer stops | Verify agent, tool, and process quiescence |
+| Worktrees collide on ports or databases | Shared-resource ownership as well as file ownership |
+| Reports never become a finished result | Integrate artifacts and check the final version |
 
-本技能提供提示和协作协议，不是调度服务、文件锁或权限系统，无法保证所有代理始终遵守。涉及真实并发写入时仍需要实际隔离和状态核实。
+This is a cooperation protocol. It does not enforce filesystem locks or guarantee obedience. Concurrent writes still need actual isolation and state checks.
 
-## 安装
+## Install
 
-在 Codex 中使用内置安装器：
+Ask Codex's built-in installer:
 
 ```text
-使用 $skill-installer 安装这个技能：
+Use $skill-installer to install:
 https://github.com/Fahuikongjian/codex-multi-agent-coordination/tree/main/skills/codex-multi-agent-coordination
 ```
 
-也可以复制仓库中的 `skills/codex-multi-agent-coordination/` 到项目的 `.agents/skills/`，或当前客户端使用的个人技能目录。当前官方文档列出的个人目录为 `~/.agents/skills/`；部分既有环境及安装器使用 `~/.codex/skills/`。以本机技能列表和安装器为准，不必同时安装两份。
+Alternatively, copy `skills/codex-multi-agent-coordination/` into the project's `.agents/skills/` or your client's personal skill directory. Current official documentation lists `~/.agents/skills/`; some existing clients and installers use `~/.codex/skills/`. Follow your client and installer instead of installing duplicates.
 
-技能允许正常的自动发现，也可显式调用。客户端未刷新时重启 Codex。不会修改你的全局 `AGENTS.md`、模型配置或并发限制。
+Automatic discovery and explicit invocation are supported. Restart Codex if the client has not refreshed. This skill does not change global `AGENTS.md`, model settings, or concurrency limits.
 
-## 使用
-
-直接委派一个实现任务：
+## Use
 
 ```text
-使用 $codex-multi-agent-coordination 完成这个功能。
-由主代理确定接口和验收，只把能独立推进的工作交给子代理。
-明确各自的文件与共享资源所有权，完成实际集成和必要检查。
+Use $codex-multi-agent-coordination to complete this feature.
+Have the coordinator settle interfaces and acceptance, delegate independent
+work, assign file and resource ownership, then integrate and verify.
 ```
 
-解决正在发生的冲突：
+For existing conflicts:
 
 ```text
-使用 $codex-multi-agent-coordination 接管当前多代理协作。
-两个代理正在改同一个文件，审查意见也在反复推翻。
-先核实当前任务、写入者和产物，停止受影响的重叠写入，
-再按证据裁定争点并完成交接；继续推进不受影响的工作。
+Use $codex-multi-agent-coordination to coordinate the current task.
+Two agents are editing one file and review keeps reversing decisions.
+Inspect current writers and artifacts, stop overlap safely, resolve the
+issue from evidence, and continue unaffected work.
 ```
 
-并行审查：
+For review:
 
 ```text
-使用 $codex-multi-agent-coordination 审查当前改动。
-按互不重复的关注点分配只读审查，使用同一个稳定版本。
-主代理核实发现并去重，不让审查者直接修改实现文件。
+Use $codex-multi-agent-coordination to review this change.
+Give read-only reviewers distinct concerns against one stable snapshot.
+Have the coordinator verify and deduplicate findings before assigning fixes.
 ```
 
-运行时需要提供真正的子代理工具。若没有，技能按依赖顺序直接推进，不会创建新的用户聊天来模拟并行。实际发送、发布等操作仍须在原有授权范围内。
+The runtime must expose actual subagent tools. Otherwise work proceeds sequentially; user chats are not used to simulate delegation. Existing authorization boundaries remain in force.
 
-## 文件结构
+## Contents
 
 ```text
 skills/codex-multi-agent-coordination/
-  SKILL.md                         核心规则与工作流
-  agents/openai.yaml               Codex 界面元数据
-  references/task-contracts.md     委派、回报和决策模板
-  references/conflict-recovery.md  冲突恢复与停写交接
-  references/codex-tools.md        运行时能力适配与官方资料
-evals/scenarios.md                行为评估输入与判定标准
+  SKILL.md                         Core workflow
+  agents/openai.yaml               English display metadata and prompt
+  references/task-contracts.md     Assignment, result, and decision templates
+  references/conflict-recovery.md  Conflict recovery and handoffs
+  references/codex-tools.md        Runtime adaptation and sources
+evals/scenarios.md                Reusable behavioral cases
+evals/results.md                  Initial read-only evaluation
+evals/live/2026-10-18/             Live development report and evidence
 ```
 
-只读入口后按实际问题加载相应参考文件。无需安装额外 Python 包、MCP 服务或后台程序。
+Read references only when relevant. Runtime use needs no additional Python packages, MCP service, or background process.
 
-## 验证与维护
+## Validation
 
-技能应通过 Codex 内置 skill-creator 的 `quick_validate.py`，并检查 YAML、相对链接和委派行为。格式校验只能证明结构有效；行为评估输入和判定标准见 [evals/scenarios.md](evals/scenarios.md)。
+The skill passed the bundled skill-creator validator and local YAML/link checks. Four initial read-only scenarios are recorded in [the forward-test report](evals/results.md). A subsequent real subagent run built an offline CSV ledger CLI; see [the live report](evals/live/2026-10-18/report.md) for checks, controlled challenges, ownership transfer, and limitations.
 
-格式与安装依据：[OpenAI Skills 文档](https://developers.openai.com/codex/skills)；子代理适配依据：[OpenAI Subagents 文档](https://developers.openai.com/codex/multi-agent)。工具名只作能力映射示例，以当前会话工具契约为准。
+A successful task demonstrates executable coordination, not universal improvement or enforced ownership. This is not an A/B benchmark.
 
-采用 [MIT License](LICENSE)。
+Sources: [OpenAI Skills](https://developers.openai.com/codex/skills) and [OpenAI Subagents](https://developers.openai.com/codex/multi-agent). Actual tool contracts take precedence over example names.
+
+Licensed under the [MIT License](LICENSE).
